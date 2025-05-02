@@ -3,7 +3,7 @@ Este projeto contém testes automatizados em Cypress para validar os endpoints d
 
 📦 Estrutura
 
-cypress/
+├──cypress/
 
 ├── e2e/
 
