@@ -8,6 +8,7 @@ cypress/
 ├── e2e/
 
 │   └── getProducts.cy.js
+
 ├── support/
 
 │   └── e2e.js
