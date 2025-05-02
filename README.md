@@ -2,13 +2,14 @@
 Este projeto contém testes automatizados em Cypress para validar os endpoints da Fake Store API..
 
 📦 Estrutura
-lua
-Copiar
-Editar
+
 cypress/
+
 ├── e2e/
+
 │   └── getProducts.cy.js
 ├── support/
+
 │   └── e2e.js
 cypress.config.js
 package.json
