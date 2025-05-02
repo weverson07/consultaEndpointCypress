@@ -7,13 +7,16 @@ cypress/
 
 ├── e2e/
 
-│   └── getProducts.cy.js
+│── getProducts.cy.js
 
 ├── support/
 
-│   └── e2e.js
-cypress.config.js
-package.json
+│── e2e.js
+
+│──cypress.config.js
+
+│──package.json
+
 🔧 Instalação
 Clone o repositório (ou navegue até a pasta do projeto).
 
