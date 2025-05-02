@@ -43,6 +43,5 @@ describe('Testando API com Cypress - GET', function () {
             expect(consulta.rating.rate).to.exist;
             expect(consulta.title).to.exist;
         });
-
     });
 });
