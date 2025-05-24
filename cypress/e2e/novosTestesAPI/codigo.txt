@@ -1,0 +1,66 @@
+import Usuarios from "../novosTestesAPI/apiAlias";
+const user = new Usuarios();
+describe('Testando API com Cypress - POST e GET', function () {
+
+    before(() => {
+        // Constrói o usuário e cria com POST
+        const userData = user.construtorDeValidacao();
+        const dadosPost = [
+            {
+                id: 0,
+                username: "usuário teste",
+                firstName: "novo",
+                lastName: "teste",
+                email: "a@ahotmail.com",
+                password: "teste",
+                phone: "1194778-83828",
+                userStatus: 1
+            }
+        ]
+        cy.request({
+            method: 'POST',
+            url: 'https://petstore.swagger.io/v2/user/createWithList',
+            body: [{ userData }], // Usa o método toJson() da instância
+            failOnStatusCode: false,
+        }).then((response) => {
+            expect(response.status).to.equal(200);
+            cy.wrap(userData).as('usuarioCriado'); // Alias acessível no `it()`
+            cy.log(userData, 'usuarioCriado')
+        });
+    });
+
+    it('Deve realizar login com o usuário criado via GET', function () {
+        cy.get('@usuarioCriado').then((us) => {
+            const { username, password } = us;
+            cy.log(username, password)
+            cy.request({
+                method: 'GET',
+                url: `https://petstore.swagger.io/v2/user/login?username=${username}&password=${password}`,
+                failOnStatusCode: false,
+            }).then((response) => {
+                const codigo = response.body.message
+                expect(response.status).to.equal(200);
+                expect(response.body.message).to.equal(codigo)
+                expect(response.body.type).to.equal("unknown")
+                cy.log('Login realizado com sucesso!');
+            });
+        });
+    });
+
+    it('Deve realizar login com o usuário criado via PUT', function () {
+        cy.get('@usuarioCriado').then((us) => {
+            //const { username } = us;
+            cy.log(username)
+            res.firstName = "Atualizado";
+
+            cy.request({
+                method: 'PUT',
+                url: `https://petstore.swagger.io/v2/user/${us.username}`,
+                body: res,
+                failOnStatusCode: false
+            }).then((response) => {
+                expect(response.status).to.equal(200);
+            });
+        });
+    });
+});
