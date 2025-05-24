@@ -11,8 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Exibir arte ASCII personalizada
+        run: |
+          echo "   ####   ##  ##   ######   ######   #######   #####    #####              ##     ##   ##  ######    #####   ##   ##    ##     ######    ####     #####   ##   ##"
+          echo "   ##  ##  ##  ##    ##  ##   ##  ##   ##   #  ##   ##  ##   ##            ####    ##   ##  # ## #   ##   ##  ### ###   ####    # ## #     ##     ##   ##  ###  ##"
+          echo "  ##       ##  ##    ##  ##   ##  ##   ## #    #        #                 ##  ##   ##   ##    ##     ##   ##  #######  ##  ##     ##       ##     ##   ##  #### ##"
+          echo "  ##        ####     #####    #####    ####     #####    #####            ##  ##   ##   ##    ##     ##   ##  #######  ##  ##     ##       ##     ##   ##  ## ####"
+          echo "  ##         ##      ##       ## ##    ## #         ##       ##           ######   ##   ##    ##     ##   ##  ## # ##  ######     ##       ##     ##   ##  ##  ###"
+          echo "   ##  ##    ##      ##       ##  ##   ##   #  ##   ##  ##   ##           ##  ##   ##   ##    ##     ##   ##  ##   ##  ##  ##     ##       ##     ##   ##  ##   ##"
+          echo "    ####    ####    ####     #### ##  #######   #####    #####            ##  ##    #####    ####     #####   ##   ##  ##  ##    ####     ####     #####   ##   ##"
+
       - name: Checkout do código
         uses: actions/checkout@v3
+
+      - name: Cache do npm
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Instalar Node.js
         uses: actions/setup-node@v3
