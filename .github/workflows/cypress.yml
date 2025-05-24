@@ -1,4 +1,4 @@
-name: Cypress Tests (Kali Linux)
+name: Cypress Tests
 
 on:
   push:
@@ -9,9 +9,6 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-
-    container:
-      image: kalilinux/kali-rolling
 
     steps:
       - name: Exibir arte ASCII personalizada
@@ -24,18 +21,6 @@ jobs:
           echo "   ##  ##    ##      ##       ##  ##   ##   #  ##   ##  ##   ##           ##  ##   ##   ##    ##     ##   ##  ##   ##  ##  ##     ##       ##     ##   ##  ##   ##"
           echo "    ####    ####    ####     #### ##  #######   #####    #####            ##  ##    #####    ####     #####   ##   ##  ##  ##    ####     ####     #####   ##   ##"
 
-      - name: Instalar dependências do sistema
-        run: |
-          apt update && apt install -y curl gnupg unzip wget git \
-            nodejs npm libgtk-3-dev libnotify-dev libgconf-2-4 \
-            libnss3 libxss1 libasound2 xvfb
-
-      - name: Verificar versões
-        run: |
-          node -v
-          npm -v
-          npx cypress --version || echo "Cypress ainda não instalado"
-
       - name: Checkout do código
         uses: actions/checkout@v3
 
@@ -47,24 +32,27 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Instalar dependências do projeto
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
         run: npm ci
 
-      - name: Rodar testes Cypress (headless com Xvfb)
-        run: |
-          Xvfb :99 & export DISPLAY=:99
-          npx cypress run
+      - name: Rodar testes Cypress (modo headless)
+        run: npx cypress run
 
       - name: Upload de vídeos (em caso de falhas)
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-videos
           path: cypress/videos
 
       - name: Upload de screenshots (em caso de falhas)
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-screenshots
           path: cypress/screenshots
